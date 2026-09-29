@@ -4,12 +4,12 @@ export const unkey=k=>k.split(',').map(Number);
 export const inside=c=>Array.isArray(c)&&c.length===3&&c.every(v=>Number.isInteger(v)&&v>=0&&v<SIZE);
 const columns=items=>items.flatMap(([x,z,h])=>Array.from({length:h},(_,y)=>[x,y,z]));
 export const levels=[
- {title:'Meet the three views',tag:'GUIDED EXAMPLE',prompt:'Rotate the model. Watch how the three drawings describe the same object.',cubes:columns([[1,1,2],[2,1,1],[1,2,1],[2,2,1]]),hint:'The small tower changes the top view as well as the front view.'},
- {title:'A small step',tag:'PUZZLE 01 / 05',prompt:'Build a step that matches all three drawings.',cubes:columns([[1,1,2],[2,1,1]]),hint:'Start with two cubes side by side. Which one needs a second cube?'},
- {title:'Around the corner',tag:'PUZZLE 02 / 05',prompt:'Find the corner, then work out where the tower belongs.',cubes:columns([[1,1,2],[2,1,1],[1,2,1]]),hint:'The top view shows an L. Its raised corner is visible in two other views.'},
- {title:'Three steps up',tag:'PUZZLE 03 / 05',prompt:'Use the front view to find the heights. Check the depth from above.',cubes:columns([[0,1,1],[1,1,2],[2,1,3]]),hint:'There are three columns, but only one row from back to front.'},
- {title:'The courtyard',tag:'PUZZLE 04 / 05',prompt:'Some cubes are hidden from one direction. Use every view.',cubes:columns([[0,0,2],[1,0,1],[2,0,2],[0,1,1],[2,1,1]]),hint:'Find the empty square in the top view before you add height.'},
- {title:'The lookout',tag:'PUZZLE 05 / 05',prompt:'Combine everything you know. Match the outline and the inside edges.',cubes:columns([[1,0,3],[2,0,2],[1,1,1],[2,1,2],[2,2,1]]),hint:'The top view reveals the footprint. The front and right views reveal the steps.'}
+ {title:'Meet The Three Views',tag:'GUIDED EXAMPLE',prompt:'Rotate the model. Watch how the three drawings describe the same object.',cubes:columns([[1,1,2],[2,1,1],[1,2,1],[2,2,1]]),hint:'The small tower changes the top view as well as the front view.'},
+ {title:'A Small Step',tag:'PUZZLE 01 / 05',prompt:'Build a step that matches all three drawings.',cubes:columns([[1,1,2],[2,1,1]]),hint:'Start with two cubes side by side. Which one needs a second cube?'},
+ {title:'Around The Corner',tag:'PUZZLE 02 / 05',prompt:'Find the corner, then work out where the tower belongs.',cubes:columns([[1,1,2],[2,1,1],[1,2,1]]),hint:'The top view shows an L. Its raised corner is visible in two other views.'},
+ {title:'Three Steps Up',tag:'PUZZLE 03 / 05',prompt:'Use the front view to find the heights. Check the depth from above.',cubes:columns([[0,1,1],[1,1,2],[2,1,3]]),hint:'There are three columns, but only one row from back to front.'},
+ {title:'The Courtyard',tag:'PUZZLE 04 / 05',prompt:'Some cubes are hidden from one direction. Use every view.',cubes:columns([[0,0,2],[1,0,1],[2,0,2],[0,1,1],[2,1,1]]),hint:'Find the empty square in the top view before you add height.'},
+ {title:'The Lookout',tag:'PUZZLE 05 / 05',prompt:'Combine everything you know. Match the outline and the inside edges.',cubes:columns([[1,0,3],[2,0,2],[1,1,1],[2,1,2],[2,2,1]]),hint:'The top view reveals the footprint. The front and right views reveal the steps.'}
 ];
 export function projection(cubes,view){
  const depths=Array.from({length:SIZE},()=>Array(SIZE).fill(null));
