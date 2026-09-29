@@ -56,6 +56,14 @@ try{
  await page.locator('#mission [data-term=model]').first().tap({force:true}).catch(()=>page.locator('#mission [data-term=model]').first().click());
  const rect=await page.locator('.term-card').first().boundingBox();ok(rect.x>=0&&rect.x+rect.width<=390,'Phone definition fits viewport');
  await page.keyboard.press('Escape');await page.emulateMedia({reducedMotion:'reduce'});ok(await page.locator('#completion').evaluate(e=>getComputedStyle(e).animationName)==='none','Reduced-motion celebration disabled');
+ // Exercise real touch events in a touch-enabled phone context.
+ const touch=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ touch.on('pageerror',e=>errors.push(e.message));await touch.goto(`http://127.0.0.1:${server.address().port}`);
+ await touch.locator('#mission [data-term=model]').first().tap();ok(await touch.locator('.term-card').count()===1,'Touch opens a definition');
+ await touch.locator('.term-card [data-term=width]').first().tap();ok(await touch.locator('.term-card').count()===2,'Touch opens nested definition');
+ await touch.locator('.term-card').last().locator('.reference-link').tap();ok(await touch.locator('#reference').evaluate(e=>e.open),'Touch opens reference');
+ await touch.close();
+ await page.locator('[data-tool=rotate]').focus();await page.keyboard.press('Alt+ArrowDown');ok(await page.locator('.term-card').count()===1,'Action control supports keyboard definition');await page.keyboard.press('Escape');
  ok(errors.length===0,`No page errors: ${errors.join('; ')}`);
  const buildId=await page.locator('#build-identity').innerText();await fs.writeFile(path.join(output,'browser-results.json'),JSON.stringify({assertions,errors,buildId,viewports:['1440x1050','390x844'],status:'passed'},null,2)+'\n');console.log(`${assertions} browser assertions passed. Build: ${buildId}`);
 }finally{await browser.close();await new Promise(r=>server.close(r));}
