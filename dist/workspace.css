@@ -98,14 +98,14 @@
   .topbar { top:6px; padding:6px 10px; gap:8px; }
   .topbar .brand p,.topbar .brand>svg { display:none; }
   .topbar nav.workshop-nav { flex:1; width:auto; order:0; }
-  .topbar nav.workshop-nav button { flex:0; padding:6px 8px; }
+  .topbar nav.workshop-nav button { flex:0 0 auto; padding:6px 8px; }
   main#workspace { top:calc(var(--header-bottom,60px) + 6px); bottom:calc(var(--footer-height,40px) + 14px); }
   .scene-tag { top:0; font-size:.65rem; }
   footer { bottom:4px; }
  }
  @media (min-width:600px) and (max-width:1050px) and (max-height:540px) {
   /* Landscape phones have more useful room beside the scene than below it. */
-  main#workspace,main#workspace[data-drawings-open=true] { grid-template-columns:310px minmax(0,1fr); grid-template-rows:38px minmax(0,1fr); }
+  main#workspace,main#workspace[data-drawings-open=true] { grid-template-columns:clamp(270px,36vw,310px) minmax(0,1fr); grid-template-rows:38px minmax(0,1fr); }
   .panel-switcher { grid-column:1; grid-row:1; }
   .workshop-panel,.views-panel { grid-column:1; grid-row:2; }
   #scene-focus-area { grid-column:2; grid-row:1/3; }

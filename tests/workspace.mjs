@@ -34,6 +34,7 @@ async function geometry(label){
  for(const selector of ['.topbar','.panel-switcher','.orientation','.zoom','footer']){
   const b=await rect(selector);ok(b.x>=0&&b.y>=0&&b.x+b.width<=dims.width+.5&&b.y+b.height<=dims.height+.5,`${label}: ${selector} within viewport`);
  }
+ ok(await page.locator('.workshop-nav button').evaluateAll(buttons=>buttons.every(b=>b.scrollWidth<=b.clientWidth+1)),`${label}: mode names fit their buttons`);
  const orient=await rect('.orientation'),zoom=await rect('.zoom');
  ok(orient.x+orient.width<=zoom.x,`${label}: camera controls do not overlap`);
  for(const selector of ['#workshop-panel','#drawings-panel'])if(await page.locator(selector).isVisible()){
@@ -59,7 +60,7 @@ try{
     await page.locator('#undo').click();ok((await page.locator('#cube-count').innerText())==='0 cubes',`${size} ${mode}: undo usable`);
    }
    await page.locator('.panel-content').evaluate(e=>e.scrollTop=0);
-   if(viewport.width===1440||viewport.width===390)await screen(`${mode}-${size}-workshop`);
+   if(viewport.width===1440||viewport.width===390||viewport.width===320)await screen(`${mode}-${size}-workshop`);
    await show('drawings');await geometry(`${size} ${mode} drawings`);
    for(const view of ['top','front','right']){
     await page.locator(`#view-${view}`).scrollIntoViewIfNeeded();
@@ -72,7 +73,7 @@ try{
    }
    await page.locator('#drawings-panel').evaluate(e=>e.scrollTop=0);
    if(viewport.width===844)await screen(`${mode}-${size}-landscape`);
-   if(viewport.width===1440||viewport.width===390)await screen(`${mode}-${size}-drawings`);
+   if(viewport.width===1440||viewport.width===390||viewport.width===320)await screen(`${mode}-${size}-drawings`);
    // Wheel and pointer gestures inside a panel must never reach the canvas.
    await page.locator('[data-view=iso]').click();
    const p=await rect('#drawings-panel');await page.mouse.move(p.x+5,p.y+Math.min(80,p.height-5));
