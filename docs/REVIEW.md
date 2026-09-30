@@ -1,75 +1,117 @@
 # Review And Verification
 
-Issue #2: Full-Viewport Workspace And Floating Panels. September 29, 2026
-(America/New_York). Review branch only; not merged or deployed.
+Issue #4 And The Tooltip Follow-Up. September 30, 2026 (UTC).
+PR #10 is stacked on PR #9; review branch only, not merged or deployed.
 
 ## Result
 
-- Full-browser scene with the existing palette and Comic Sans / Comic Neue typography.
-- Independent floating Workshop and Drawing Board panels on desktop, switchable
-  bottom panels on portrait phones, and a side panel on landscape phones.
-- Hide/show controls and camera framing that follows the unobstructed scene area.
-- Scrollable instructions, predictions, progress, tools, feedback, and drawings;
-  essential controls remain reachable with mouse, keyboard, and touch.
-- Panel interactions do not rotate, zoom, add, or remove cubes in the scene.
-- Free Explore, Learn, Challenge, alternative solutions, and fixed top/front/right
-  drawing conventions retained. The short Explore/Prediction instructions now
-  name the workspace and panels instead of relying on left/right/below placement.
+The reused main action kept a stale 3D Model vocabulary annotation after its
+label changed to Check Construction. Action buttons now never open definitions,
+including nested labels, focus, keyboard shortcuts, and touch. Existing stale
+annotations are removed when content is decorated.
+
+- Definitions prefer nearby free space outside panels, action controls, and
+  earlier cards. Their position stays fixed while reading instead of chasing
+  the pointer. Scrolling a short card keeps its size and position stable.
+- Hover opens after 220 ms, with a 120 ms fade. A 300 ms travel grace period lets
+  students reach the card. Leaving the family fades it and its descendants away;
+  hovering a descendant preserves all its ancestors. Returning to a parent
+  dismisses abandoned children. Fading cards cannot intercept input.
+- Keyboard focus and touch keep cards available without hovering. Escape closes
+  one level and restores trigger focus. Outside taps and explicit close controls
+  remain available. A stationary pointer cannot dismiss a keyboard-open card.
+- Reduced motion removes fades. Reference text, nested terms, accessible control
+  names, and searchable Reference navigation remain available.
 
 ## Verified Build
 
-`0.1.0_First-Light_pr-9_build-005_20260930T011129Z_g65d4a74ebce1_web`
+`0.1.0_First-Light_pr-10_build-004_20260930T015345Z_g584e3370f9eb_web`
 
-[Passing GitHub Review](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36653913240)
-· [Saved Build ZIP](review/issue-2/0.1.0_First-Light_pr-9_build-005_20260930T011129Z_g65d4a74ebce1_web.zip)
-· [Manifest](review/issue-2/build-manifest.json)
-· [Verification Record](review/issue-2/verification.json)
+[Passing GitHub Review](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36657265923)
+· [Download Review Artifact](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36657265923/artifacts/11073097934)
+· [Saved Build ZIP](review/issue-4/0.1.0_First-Light_pr-10_build-004_20260930T015345Z_g584e3370f9eb_web.zip)
+· [Manifest](review/issue-4/build-manifest.json)
+· [Verification Record](review/issue-4/verification.json)
 
-The saved ZIP contains the exact downloaded CI build, including its original
-manifest and build report. Repackaging does not create or relabel a build.
-The artifact folder, console, embedded manifest, visible footer, both browser
-reports, and build report agree. Runtime source files match reviewed head
-`e09bf52c0cb918852bca54e2835aa423fed592b3` byte-for-byte, apart from the intentional build-ID injection
-in HTML. The manifest records the actual CI merge revision `65d4a74ebce119a9b3b4d5b2721af89f28e7f094`.
+The saved ZIP contains the exact tested CI build and its original manifest and
+build report. It is repackaged, not rebuilt or relabeled. The folder, console,
+manifest, visible footer, three browser reports, and build report agree.
+Runtime files match reviewed head `7bfd54b195953c0364ff7da375860cc26f655816`
+byte-for-byte except for the intentional HTML build-ID injection. The complete
+source fingerprint also matches. The manifest records the actual CI merge
+revision `584e3370f9eb1bc522e9844bdc5b82a967eb0525`.
 
 ## Checks
 
-- **167** spatial, puzzle, input-math, alternative-solution, and local-asset checks.
-- **629** workspace assertions: all three modes at 1440×900, 1280×720, 390×844,
-  320×568, and 844×390; full canvas coverage; no page overflow; reachable panel
-  controls/drawings; camera and panel separation; header labels; viewport changes;
-  actual touch placement/removal; panel switching; prediction; stable build ID.
-- **41** existing browser assertions: all six activities completed via controls;
-  overlay combinations; separate free construction; challenge target protection;
-  nested/reference navigation; keyboard and touch; accurate completion; reduced motion.
-- **837 total checks passed; no browser page errors.** Syntax checks also pass.
-- Desktop, portrait, small-phone, landscape, and prediction screenshots inspected.
-  Drawing content scrolls on phones; the fixed top/front/right arrangement remains intact.
-- CI builds 001–005 have distinct reserved identities. Download/reload preserves
-  identity. The final evidence-only commit does not rebuild or relabel build 005.
+- **167** logic, spatial, alternative-solution, and local-asset checks.
+- **74** focused tooltip assertions: the reported Check Construction sequence;
+  stale and nested action labels; 13 representative action controls; unobstructed
+  first click, keyboard activation, and tap; desktop panel avoidance; three-level
+  hover ancestry; travel grace and fade dismissal; keyboard focus restoration;
+  stationary-pointer behavior; reduced motion; nested Reference text; real touch
+  at 390×844 and 320×568; stable card scrolling and working Reference links.
+- **629** workspace assertions across 1440×900, 1280×720, 390×844, 320×568, and
+  844×390: all modes, viewport geometry, scrolling, panel controls, scene input
+  separation, actual touch edits, predictions, and stable build identity.
+- **41** existing browser assertions: all six activities completed through
+  controls, alternative UI states, target protection, reference navigation,
+  keyboard/touch access, completion accuracy, and reduced motion.
+- **911 total checks passed; no browser page errors.** Syntax checks pass.
+- Desktop nested definitions, Check Construction, both portrait phone sizes,
+  and landscape screenshots inspected. On narrow phones definitions may overlap
+  each other; shorter internally scrollable cards preserve access to controls.
+- CI builds 001–004 retain distinct reserved identities. Earlier failures exposed
+  stationary-pointer, card-scrolling, and tiny-phone placement cases addressed
+  in build 004. The final documentation/evidence commit does not rebuild it.
 
-[Workspace Results](review/issue-2/workspace-results.json)
-· [Existing Browser Results](review/issue-2/browser-results.json)
+[Tooltip Results](review/issue-4/tooltip-results.json)
+· [Workspace Results](review/issue-4/workspace-results.json)
+· [Existing Browser Results](review/issue-4/browser-results.json)
 
 ## Screenshots
 
-[Desktop](review/issue-2/desktop.png) ·
-[Phone Workshop](review/issue-2/phone-workshop.png) ·
-[Phone Drawings](review/issue-2/phone-drawings.png) ·
-[Landscape](review/issue-2/landscape.png) ·
-[Small Phone](review/issue-2/small-phone.png) ·
-[Phone Prediction](review/issue-2/phone-prediction.png)
+[Check Construction](review/issue-4/check-construction-safe.png) ·
+[Desktop Family](review/issue-4/nested-family-desktop.png) ·
+[Phone Family](review/issue-4/nested-phone-390.png) ·
+[Small Phone](review/issue-4/root-phone-320.png) ·
+[Small Phone Family](review/issue-4/nested-phone-320.png) ·
+[Landscape](review/issue-4/landscape.png)
 
-![Floating Desktop Workspace](review/issue-2/desktop.png)
+![Nested Definitions Clear Of Desktop Panels](review/issue-4/nested-family-desktop.png)
+
+## Try This Build
+
+Download and extract the review artifact. If the previous server is running,
+stop it with Ctrl+C. Open a terminal in the new `builds/<full-build-id>` folder
+containing `index.html`, then run:
+
+```sh
+py -m http.server 8000
+```
+
+On macOS/Linux use `python3` instead of `py`. Open http://localhost:8000 and refresh.
+The footer should show PR 10, build 004. A refresh clears in-memory progress.
+
+1. Choose Free Explore, add a cube, and click Check Construction once. Its result
+   should appear immediately, without a definition opening.
+2. In Learn, hover 3D Model in the instructions, then Width in its card, then Front
+   View in the child. Move into the grandchild: all ancestors stay open.
+3. Return to the first card: the abandoned children fade away. Move outside the
+   entire family: all remaining cards fade away after a brief travel grace.
+4. Tab to a vocabulary term and press Enter; use Escape to return one level.
+   On touch, tap terms and scroll short cards to reach Open In Reference.
 
 ## Handoff
 
-PR #9 is stacked on the still-open PR #1. Merge/accept #1 first, then retarget
-#9 to main for review. Neither has been deployed by this task. The classroom
-scene (#3) and button/reference/camera follow-ups (#4–#8) remain separate.
+PR #10 targets the unmerged PR #9 branch. Review order remains #1 → #9 → #10;
+retarget each dependent PR after its predecessor is accepted. The teacher's
+reported blocker authorized this focused tooltip fix ahead of the classroom
+scene (#3). Issues #3 and #5–#8 remain separate. No merge or deployment occurred.
 
-The existing 3D-coordinate Canvas renderer is retained. Linux screenshots use
-bundled Comic Neue because Microsoft Comic Sans is not installed. Existing
-curricular-audit gaps remain as recorded in CURRICULAR-MAPPING.md.
+Panel avoidance is best effort when screen space is limited; action controls
+receive the highest placement priority. Keyboard and touch do not depend on
+unhovering. Existing renderer, puzzles, curricular-audit gaps, and offline assets
+are unchanged by this task.
 
-[Prior PR #1 Review](REVIEW-PR-1.md) · [Short Checkpoint](ISSUE-2-CHECKPOINT.md)
+[Prior PR #9 Review](REVIEW-PR-9.md) · [Prior PR #1 Review](REVIEW-PR-1.md) ·
+[Short Checkpoint](ISSUE-4-CHECKPOINT.md)

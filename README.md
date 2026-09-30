@@ -16,6 +16,21 @@ feedback and the main action in a separate scrolling area; the Drawing Board
 keeps its heading and comparison controls at the top. Panel gestures do not edit
 or rotate the scene. Use uncovered scene areas to build, rotate, and zoom.
 
+## Vocabulary Definitions
+
+Hover a bold, dotted-underlined term in explanatory text to open its definition.
+Cards prefer nearby space outside panels and other definitions, then stay still
+while you read. Move between a term and its cards to keep that family open;
+leaving it dismisses the family after a short travel grace period and a 120 ms
+fade. Returning to a parent dismisses abandoned children. Reduced motion removes
+the fade.
+
+Use Enter on a focused term or tap a term to explore without hovering. Escape
+or × closes a card; an outside tap dismisses the family. Short cards scroll on
+small screens, where avoiding every panel is not always possible. Each card
+links to the searchable Reference. Action buttons act directly and never open
+vocabulary definitions.
+
 ## Play And Publish
 
 The complete game is in this repository and runs independently of ChatGPT. The earlier private ChatGPT Sites preview was hosted separately.
@@ -79,6 +94,9 @@ The current review evidence is in [Review And Verification](docs/REVIEW.md).
 Run `node verify.mjs` for spatial and input checks. The browser playthrough is
 `tests/browser.mjs` (Playwright required); it supports `PLAYWRIGHT_MODULE`,
 `CHROMIUM_EXECUTABLE`, `GAME_DIRECTORY`, and `EVIDENCE_DIRECTORY` overrides.
+Run `node tests/workspace.mjs` for viewport and panel interactions, and
+`node tests/tooltips.mjs` for action-button, nested hover, keyboard, and touch
+regressions. The review workflow runs all three against the identified build.
 
 [Shared Edugames Standards](docs/EDUGAMES-STANDARDS.md) ·
 [Curricular Mapping And Missing Audits](docs/CURRICULAR-MAPPING.md) ·

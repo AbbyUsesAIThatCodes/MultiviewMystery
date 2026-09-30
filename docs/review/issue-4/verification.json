@@ -1,0 +1,17 @@
+{
+  "buildId": "0.1.0_First-Light_pr-10_build-004_20260930T015345Z_g584e3370f9eb_web",
+  "sourceRevision": "584e3370f9eb1bc522e9844bdc5b82a967eb0525",
+  "prHead": "7bfd54b195953c0364ff7da375860cc26f655816",
+  "sourceMatch": true,
+  "sourceFingerprintMatch": true,
+  "identityMatch": true,
+  "logicChecks": 167,
+  "tooltipAssertions": 74,
+  "workspaceAssertions": 629,
+  "browserAssertions": 41,
+  "totalChecks": 911,
+  "errors": [],
+  "archiveSha256": "63e18b8234e5049f1ed85805323bd5494c397328a26ae81da2ce012cb232a6a7",
+  "workflowRun": 36657265923,
+  "workflowArtifact": 11073097934
+}
