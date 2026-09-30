@@ -1,0 +1,13 @@
+{
+  "buildId": "0.1.0_First-Light_pr-9_build-005_20260930T011129Z_g65d4a74ebce1_web",
+  "sourceRevision": "65d4a74ebce119a9b3b4d5b2721af89f28e7f094",
+  "prHead": "e09bf52c0cb918852bca54e2835aa423fed592b3",
+  "sourceMatch": true,
+  "identityMatch": true,
+  "logicChecks": 167,
+  "workspaceAssertions": 629,
+  "browserAssertions": 41,
+  "totalChecks": 837,
+  "errors": [],
+  "archiveSha256": "7e699f25d5a6053fc324f8996e00eecae71433ace8f058a3d8df7486f7ef64da"
+}
