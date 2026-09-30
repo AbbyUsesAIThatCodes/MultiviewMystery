@@ -1,0 +1,48 @@
+name: Review Floating Workspace
+on:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: workspace-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  browser-review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Logic And Syntax
+        run: |
+          node --check dist/app.js
+          node --check dist/scene.mjs
+          node --check dist/workspace.mjs
+          node verify.mjs
+      - name: Build Review Artifact
+        id: build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/build.mjs
+      - name: Install Browser Test Runtime
+        run: |
+          npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verify The Packaged Game
+        env:
+          GAME_DIRECTORY: ${{ steps.build.outputs.path }}
+        run: |
+          node tests/workspace.mjs
+          node tests/browser.mjs
+      - name: Save Review Build And Evidence
+        if: always() && steps.build.outputs.path != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.id }}-review
+          path: |
+            ${{ steps.build.outputs.path }}
+            test-results/
