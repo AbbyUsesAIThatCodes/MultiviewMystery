@@ -19,10 +19,10 @@ try{
  ok((await page.locator('#mission').innerText()).includes('You can rotate the 3D model in the workspace!'),'Explore copy matches floating layout');
  ok((await page.locator('body').evaluate(e=>getComputedStyle(e).fontFamily)).includes('Comic Sans'),'Comic Sans first in font stack');
  await page.screenshot({path:path.join(output,'learn-desktop.png'),fullPage:true});
- await page.locator('[data-mode=build]').click();ok((await page.locator('#mission').innerText()).includes('green + Add Cube'),'Guided build-specific instruction');
- await add([1,0,1]);const count=await page.locator('#cube-count').innerText();await page.locator('[data-tool=rotate]').click();
- const canvas=page.locator('#scene'),box=await canvas.boundingBox();await canvas.click({position:{x:box.width/2,y:box.height/2}});ok(await page.locator('#cube-count').innerText()===count,'Rotate click cannot edit');
- await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+90,box.y+box.height/2+35,{steps:8});await page.mouse.up();ok(await page.locator('[data-view][aria-pressed=true]').count()===0,'Rotate drag changes camera');
+ await page.locator('[data-mode=build]').click();ok((await page.locator('#mission').innerText()).includes('Choose + Add Cube'),'Guided build-specific instruction');
+ await add([1,0,1]);const count=await page.locator('#cube-count').innerText();ok(await page.locator('[data-tool=rotate]').count()===0,'Redundant Rotate View control removed');
+ const canvas=page.locator('#scene'),box=await canvas.boundingBox();
+ await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+90,box.y+box.height/2+35,{steps:8});await page.mouse.up();ok(await page.locator('[data-view][aria-pressed=true]').count()===0,'Rotate drag changes camera');ok(await page.locator('#cube-count').innerText()===count,'Rotation drag does not edit cubes');
  for(const target of [true,false])for(const outline of [true,false]){
   for(const [id,want] of [['target-toggle',target],['overlay',outline]])if((await page.locator('#'+id).getAttribute('aria-pressed'))!==String(want))await page.locator('#'+id).click();
   ok((await page.locator('#view-front rect[fill="#bbdfd5"]').count()>0)===target,'Target visibility independent');
@@ -63,7 +63,7 @@ try{
  await touch.locator('.term-card:not(.is-closing) [data-term=width]').first().tap();ok(await touch.locator('.term-card:not(.is-closing)').count()===2,'Touch opens nested definition');
  await touch.locator('.term-card:not(.is-closing)').last().locator('.reference-link').tap();ok(await touch.locator('#reference').evaluate(e=>e.open),'Touch opens reference');
  await touch.close();
- await page.locator('[data-tool=rotate]').focus();await page.keyboard.press('Alt+ArrowDown');ok(await page.locator('.term-card:not(.is-closing)').count()===0,'Action controls do not open keyboard definitions');
+ await page.locator('[data-tool=add]').focus();await page.keyboard.press('Alt+ArrowDown');ok(await page.locator('.term-card:not(.is-closing)').count()===0,'Action controls do not open keyboard definitions');
  ok(errors.length===0,`No page errors: ${errors.join('; ')}`);
  const buildId=await page.locator('#build-identity').innerText();await fs.writeFile(path.join(output,'browser-results.json'),JSON.stringify({assertions,errors,buildId,viewports:['1440x1050','390x844'],status:'passed'},null,2)+'\n');console.log(`${assertions} browser assertions passed. Build: ${buildId}`);
 }catch(error){await page.screenshot({path:path.join(output,'browser-failure.png'),fullPage:true});throw error;}finally{await browser.close();await new Promise(r=>server.close(r));}
