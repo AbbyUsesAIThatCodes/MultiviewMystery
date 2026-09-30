@@ -22,7 +22,13 @@ const rect=selector=>page.locator(selector).boundingBox();
 const pixels=()=>page.locator('#scene').evaluate(c=>c.toDataURL());
 const settle=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
 async function show(name){if(await page.locator(`#${name}-toggle`).getAttribute('aria-expanded')==='false')await page.locator(`#${name}-toggle`).click();await settle();}
-async function screen(name){await page.evaluate(()=>getSelection()?.removeAllRanges());await page.screenshot({path:path.join(output,name+'.png')});}
+async function screen(name){
+ await page.evaluate(()=>getSelection()?.removeAllRanges());await settle();
+ await page.screenshot({path:path.join(output,name+'.png')});
+ const chrome=await page.evaluate(()=>['.topbar','.brand','.brand>div','.brand h1','.brand p'].map(selector=>{const e=document.querySelector(selector),r=e.getBoundingClientRect();return{selector,top:r.top,bottom:r.bottom,height:r.height,scrollTop:e.scrollTop,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight};}));
+ await fs.writeFile(path.join(output,name+'-chrome.json'),JSON.stringify(chrome));
+ if(name!=='failure')ok(chrome[3].top>=chrome[0].top,`${name}: title stays inside header`);
+}
 async function geometry(label){
  await settle();
  const dims=await page.evaluate(()=>({width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight}));
