@@ -129,8 +129,8 @@ function openTerm(trigger,{keyboard=false,touch=false,origin=null}={}){
  void card.offsetWidth;requestAnimationFrame(()=>{if(stack.includes(item))card.classList.add('is-visible');});
  if(keyboard)close.focus({preventScroll:true});
 }
-function reflow(){
- for(let i=0;i<stack.length;i++){
+function reflow(start=0){
+ for(let i=start;i<stack.length;i++){
   const item=stack[i];
   if(!item.trigger.isConnected||!visibleRect(item.trigger)){closeFrom(i);break;}
   const scroller=item.trigger.closest('.panel-content,.views-panel');
@@ -190,6 +190,12 @@ export function initReference(){
  },true);
  document.addEventListener('focusin',e=>{if(modality==='keyboard')retainFamily(e.target);});
  for(const dialog of document.querySelectorAll('dialog'))dialog.addEventListener('close',()=>closeFrom(0));
- window.addEventListener('resize',reflow);window.addEventListener('scroll',reflow,true);
+ window.addEventListener('resize',()=>reflow());
+ window.addEventListener('scroll',e=>{
+  // Reading a short card must not resize it and reset its own scroll position.
+  // Only its descendants need to follow a trigger moving inside that card.
+  const index=stack.findIndex(s=>s.card===e.target);
+  reflow(index+1);
+ },true);
  new MutationObserver(()=>{const index=stack.findIndex(s=>!s.trigger.isConnected);if(index>=0)closeFrom(index);}).observe(document.body,{childList:true,subtree:true});
 }

@@ -91,8 +91,12 @@ try{
   ok(card.x>=0&&card.y>=0&&card.x+card.width<=viewport.width&&card.y+card.height<=viewport.height,`${viewport.width}: touch definition fits screen`);
   ok(overlap(card,button)<1,`${viewport.width}: touch definition leaves primary action clear`);
   await phone.locator(cards).first().locator('[data-term=width]').first().tap();ok(await phone.locator(cards).count()===2,`${viewport.width}: nested touch terms preserved`);
-  await phone.screenshot({path:path.join(output,`nested-phone-${viewport.width}.png`)});
-  await phone.locator(cards).last().locator('.reference-link').tap();ok(await phone.locator('#reference').evaluate(e=>e.open),`${viewport.width}: touch reference link works`);
+  await phone.waitForTimeout(180);await phone.screenshot({path:path.join(output,`nested-phone-${viewport.width}.png`)});
+  const touchChild=phone.locator(cards).last(),childBox=await touchChild.boundingBox();
+  await touchChild.locator('.reference-link').scrollIntoViewIfNeeded();await phone.waitForTimeout(150);
+  const afterScroll=await touchChild.boundingBox();
+  ok(afterScroll.x===childBox.x&&afterScroll.y===childBox.y&&afterScroll.height===childBox.height,`${viewport.width}: scrolling a tooltip keeps its position and size`);
+  await touchChild.locator('.reference-link').tap();ok(await phone.locator('#reference').evaluate(e=>e.open),`${viewport.width}: touch reference link works`);
   await phone.locator('#reference-close').tap();
   await phone.locator('[data-workshop=free]').tap();await phone.locator('#place-cube').tap();await phone.locator('#primary-action').tap();
   ok((await phone.locator('#feedback-title').innerText()).includes('Connected And Supported'),`${viewport.width}: Check Construction activates on first tap`);
