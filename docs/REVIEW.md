@@ -1,117 +1,103 @@
 # Review And Verification
 
-Issue #4 And The Tooltip Follow-Up. September 30, 2026 (UTC).
-PR #10 is stacked on PR #9; review branch only, not merged or deployed.
+Compact Controls And Fullscreen. September 30, 2026 (UTC).
+PR #11 addresses issues #6 and #7 and the September 29 follow-up requesting
+fullscreen and collapsible panel headers. Review only; not merged or deployed.
 
 ## Result
 
-The reused main action kept a stale 3D Model vocabulary annotation after its
-label changed to Check Construction. Action buttons now never open definitions,
-including nested labels, focus, keyboard shortcuts, and touch. Existing stale
-annotations are removed when content is decorated.
-
-- Definitions prefer nearby free space outside panels, action controls, and
-  earlier cards. Their position stays fixed while reading instead of chasing
-  the pointer. Scrolling a short card keeps its size and position stable.
-- Hover opens after 220 ms, with a 120 ms fade. A 300 ms travel grace period lets
-  students reach the card. Leaving the family fades it and its descendants away;
-  hovering a descendant preserves all its ancestors. Returning to a parent
-  dismisses abandoned children. Fading cards cannot intercept input.
-- Keyboard focus and touch keep cards available without hovering. Escape closes
-  one level and restores trigger focus. Outside taps and explicit close controls
-  remain available. A stationary pointer cannot dismiss a keyboard-open card.
-- Reduced motion removes fades. Reference text, nested terms, accessible control
-  names, and searchable Reference navigation remain available.
+- **+ Add Cube** and **− Remove Cube** share one active state and matching styles.
+  Only the selected tool is green; a checkmark and `aria-pressed` identify it
+  without relying on color. Selection remains accurate after edits, reset, undo,
+  and mode changes.
+- **Rotate View** is removed. Drag with either editing tool to turn the scene;
+  releasing a drag does not edit cubes. A deliberate click/tap performs the
+  selected edit. Named camera views, keyboard rotation, and zoom remain.
+- **Full Screen** enters native browser fullscreen; **Exit Full Screen** or the
+  browser's exit command returns to the window. The control follows actual
+  fullscreen state. Unsupported browsers retain the full-window workspace;
+  rejected requests show feedback without stopping gameplay.
+- **Workshop** and **Drawing Board** now contain their own collapsible headers.
+  The separate panel toolbar is removed. Headers stay available while contents
+  scroll and when folded. Desktop panels open independently; compact layouts
+  show one body at a time. Collapsing expands the scene's framing and preserves
+  the construction, lesson state, and selected tool.
 
 ## Verified Build
 
-`0.1.0_First-Light_pr-10_build-004_20260930T015345Z_g584e3370f9eb_web`
+`0.1.0_First-Light_pr-11_build-002_20260930T022518Z_g5ffa40ea8efa_web`
 
-[Passing GitHub Review](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36657265923)
-· [Download Review Artifact](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36657265923/artifacts/11073097934)
-· [Saved Build ZIP](review/issue-4/0.1.0_First-Light_pr-10_build-004_20260930T015345Z_g584e3370f9eb_web.zip)
-· [Manifest](review/issue-4/build-manifest.json)
-· [Verification Record](review/issue-4/verification.json)
+[Passing CI](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36659754969)
+· [Download Review Artifact](https://github.com/AbbyUsesAIThatCodes/MultiviewMystery/actions/runs/36659754969/artifacts/11073403783)
+· [Saved Build ZIP](review/compact-controls/0.1.0_First-Light_pr-11_build-002_20260930T022518Z_g5ffa40ea8efa_web.zip)
+· [Manifest](review/compact-controls/build-manifest.json)
+· [Verification Record](review/compact-controls/verification.json)
 
-The saved ZIP contains the exact tested CI build and its original manifest and
-build report. It is repackaged, not rebuilt or relabeled. The folder, console,
-manifest, visible footer, three browser reports, and build report agree.
-Runtime files match reviewed head `7bfd54b195953c0364ff7da375860cc26f655816`
-byte-for-byte except for the intentional HTML build-ID injection. The complete
-source fingerprint also matches. The manifest records the actual CI merge
-revision `584e3370f9eb1bc522e9844bdc5b82a967eb0525`.
+The saved ZIP repackages the exact tested output, retaining its original manifest
+and report. Folder name, console, manifest, visible footer, four browser reports,
+and build report agree. Runtime bytes match reviewed head
+`950273282c16f3bf54f4d7739dc95168152b8d74`, apart from the intended HTML identity
+injection; the complete source fingerprint also matches. The manifest records
+CI merge revision `5ffa40ea8efa433ffd697d906b864e92c0eaf955`.
 
 ## Checks
 
-- **167** logic, spatial, alternative-solution, and local-asset checks.
-- **74** focused tooltip assertions: the reported Check Construction sequence;
-  stale and nested action labels; 13 representative action controls; unobstructed
-  first click, keyboard activation, and tap; desktop panel avoidance; three-level
-  hover ancestry; travel grace and fade dismissal; keyboard focus restoration;
-  stationary-pointer behavior; reduced motion; nested Reference text; real touch
-  at 390×844 and 320×568; stable card scrolling and working Reference links.
-- **629** workspace assertions across 1440×900, 1280×720, 390×844, 320×568, and
-  844×390: all modes, viewport geometry, scrolling, panel controls, scene input
-  separation, actual touch edits, predictions, and stable build identity.
-- **41** existing browser assertions: all six activities completed through
-  controls, alternative UI states, target protection, reference navigation,
-  keyboard/touch access, completion accuracy, and reduced motion.
-- **911 total checks passed; no browser page errors.** Syntax checks pass.
-- Desktop nested definitions, Check Construction, both portrait phone sizes,
-  and landscape screenshots inspected. On narrow phones definitions may overlap
-  each other; shorter internally scrollable cards preserve access to controls.
-- CI builds 001–004 retain distinct reserved identities. Earlier failures exposed
-  stationary-pointer, card-scrolling, and tiny-phone placement cases addressed
-  in build 004. The final documentation/evidence commit does not rebuild it.
+**1,080 checks passed, with no browser page errors.** Syntax checks also pass.
 
-[Tooltip Results](review/issue-4/tooltip-results.json)
-· [Workspace Results](review/issue-4/workspace-results.json)
-· [Existing Browser Results](review/issue-4/browser-results.json)
+| Suite | Checks | Coverage |
+| --- | ---: | --- |
+| Logic | 167 | Puzzle rules, projections, alternative solutions, picking, camera math, local assets |
+| Controls | 138 | Shared colors/checkmark/state, reset/undo, real mouse and touch drags and deliberate edits with both tools in all three modes, keyboard collapse, phone panel switching, native fullscreen entry/exit, browser-driven exit, rejection and unsupported-browser fallback |
+| Tooltips | 74 | Check Construction, action exclusions, nesting, hover lifetime, keyboard focus, reduced motion, touch, scrolling, Reference navigation |
+| Workspace | 659 | All modes at 1440×900, 1280×720, 390×844, 320×568, and 844×390; reachable headers/content, scrolling, scene input separation, camera framing, actual touch edits, predictions, stable identity |
+| Playthrough | 42 | All six activities completed, completion accuracy, target protection, reference access, phone interaction, reduced motion |
+
+[Controls Results](review/compact-controls/controls-results.json) ·
+[Tooltip Results](review/compact-controls/tooltip-results.json) ·
+[Workspace Results](review/compact-controls/workspace-results.json) ·
+[Playthrough Results](review/compact-controls/browser-results.json)
+
+Desktop fullscreen, folded panels, phone editing tools, 320-pixel Workshop and
+Drawing Board layouts, landscape, and the tooltip regression screenshots were
+inspected. Small-screen contents remain scrollable. The first build passed the
+main interactions; its fullscreen-denial test setup was corrected before this
+complete passing run. Builds 001 and 002 retain their distinct reserved IDs.
+The final documentation/evidence commit does not rebuild or relabel build 002.
 
 ## Screenshots
 
-[Check Construction](review/issue-4/check-construction-safe.png) ·
-[Desktop Family](review/issue-4/nested-family-desktop.png) ·
-[Phone Family](review/issue-4/nested-phone-390.png) ·
-[Small Phone](review/issue-4/root-phone-320.png) ·
-[Small Phone Family](review/issue-4/nested-phone-320.png) ·
-[Landscape](review/issue-4/landscape.png)
+[Fullscreen And Tool Selection](review/compact-controls/fullscreen-desktop.png) ·
+[Collapsed Desktop](review/compact-controls/collapsed-desktop.png) ·
+[Phone Tools](review/compact-controls/tools-phone.png) ·
+[Small Phone Workshop](review/compact-controls/small-phone-workshop.png) ·
+[Small Phone Drawings](review/compact-controls/small-phone-drawings.png) ·
+[Landscape](review/compact-controls/landscape.png) ·
+[Nested Tooltips](review/compact-controls/nested-tooltips.png)
 
-![Nested Definitions Clear Of Desktop Panels](review/issue-4/nested-family-desktop.png)
+![Collapsed Panels Leave The Model Clear](review/compact-controls/collapsed-desktop.png)
 
 ## Try This Build
 
-Download and extract the review artifact. If the previous server is running,
-stop it with Ctrl+C. Open a terminal in the new `builds/<full-build-id>` folder
-containing `index.html`, then run:
+Extract the review artifact. Stop an old local server with Ctrl+C. Open a terminal
+in the new `builds/<full-build-id>` folder containing `index.html`, then run
+`py -m http.server 8000` (or `python3 -m http.server 8000` on macOS/Linux).
+Refresh http://localhost:8000 and confirm **PR 11, build 002** in the footer.
 
-```sh
-py -m http.server 8000
-```
-
-On macOS/Linux use `python3` instead of `py`. Open http://localhost:8000 and refresh.
-The footer should show PR 10, build 004. A refresh clears in-memory progress.
-
-1. Choose Free Explore, add a cube, and click Check Construction once. Its result
-   should appear immediately, without a definition opening.
-2. In Learn, hover 3D Model in the instructions, then Width in its card, then Front
-   View in the child. Move into the grandchild: all ancestors stay open.
-3. Return to the first card: the abandoned children fade away. Move outside the
-   entire family: all remaining cards fade away after a brief travel grace.
-4. Tab to a vocabulary term and press Enter; use Escape to return one level.
-   On touch, tap terms and scroll short cards to reach Open In Reference.
+1. In Free Explore, switch between Add Cube and Remove Cube. Only the selected
+   button should be green and checked.
+2. Click/tap to edit, then drag a cube face with each tool selected. Rotation
+   should leave the cube count and tool selection unchanged.
+3. Fold and reopen each panel using its header. Both headers remain available;
+   the model and lesson state stay intact.
+4. Enter Full Screen, try the tools and Reference, and exit again.
 
 ## Handoff
 
-PR #10 targets the unmerged PR #9 branch. Review order remains #1 → #9 → #10;
-retarget each dependent PR after its predecessor is accepted. The teacher's
-reported blocker authorized this focused tooltip fix ahead of the classroom
-scene (#3). Issues #3 and #5–#8 remain separate. No merge or deployment occurred.
+PR #11 is stacked on unmerged PR #10. Review order remains #1 → #9 → #10 → #11;
+retarget each dependent PR after its predecessor is accepted. Latest teacher
+instructions authorize this combined controls pass ahead of remaining issues
+#3, #5, and #8. No merge or deployment occurred. Existing curricular-audit gaps
+and offline assets are unchanged.
 
-Panel avoidance is best effort when screen space is limited; action controls
-receive the highest placement priority. Keyboard and touch do not depend on
-unhovering. Existing renderer, puzzles, curricular-audit gaps, and offline assets
-are unchanged by this task.
-
-[Prior PR #9 Review](REVIEW-PR-9.md) · [Prior PR #1 Review](REVIEW-PR-1.md) ·
-[Short Checkpoint](ISSUE-4-CHECKPOINT.md)
+[Prior PR #10 Review](REVIEW-PR-10.md) ·
+[Short Checkpoint](COMPACT-CONTROLS-CHECKPOINT.md)

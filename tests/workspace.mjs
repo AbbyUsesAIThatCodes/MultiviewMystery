@@ -37,13 +37,13 @@ async function geometry(label){
  ok(dims.scrollWidth===dims.width&&dims.scrollHeight===dims.height,`${label}: no document overflow`);
  const frame=await rect('#scene-focus-area');
  ok(frame.width>150&&frame.height>30,`${label}: exposed scene has usable space`);
- for(const selector of ['.topbar','.panel-switcher','.orientation','.zoom','footer']){
+ for(const selector of ['.topbar','#workshop-toggle','#drawings-toggle','.orientation','.zoom','footer']){
   const b=await rect(selector);ok(b.x>=0&&b.y>=0&&b.x+b.width<=dims.width+.5&&b.y+b.height<=dims.height+.5,`${label}: ${selector} within viewport`);
  }
  ok(await page.locator('.workshop-nav button').evaluateAll(buttons=>buttons.every(b=>b.scrollWidth<=b.clientWidth+1)),`${label}: mode names fit their buttons`);
  const orient=await rect('.orientation'),zoom=await rect('.zoom');
  ok(orient.x+orient.width<=zoom.x,`${label}: camera controls do not overlap`);
- for(const selector of ['#workshop-panel','#drawings-panel'])if(await page.locator(selector).isVisible()){
+ for(const selector of ['#workshop-panel','#drawings-panel'])if(await page.locator(selector+' .panel-body').isVisible()){
   const p=await rect(selector);ok(p.x>=0&&p.y>=0&&p.x+p.width<=dims.width+.5&&p.y+p.height<=dims.height+.5,`${label}: ${selector} contained`);
   ok(p.y>=frame.y+frame.height||p.x+p.width<=frame.x+.5||p.x>=frame.x+frame.width-.5,`${label}: panel clears model area`);
  }
@@ -70,14 +70,15 @@ try{
    await show('drawings');await geometry(`${size} ${mode} drawings`);
    for(const view of ['top','front','right']){
     await page.locator(`#view-${view}`).scrollIntoViewIfNeeded();
-    const r=await rect(`#view-${view}`),p=await rect('#drawings-panel'),heading=await rect('#drawings-panel>.panel-top');
-    // A sticky heading must not cover the drawing being inspected.
-    if(r.y<heading.y+heading.height)await page.locator('#drawings-panel').evaluate((e,amount)=>e.scrollTop-=amount,heading.y+heading.height-r.y);
+    const r=await rect(`#view-${view}`),p=await rect('#drawings-panel'),heading=await rect('#drawings-toggle'),comparison=page.locator('#drawings-body>.panel-top');
+    // The panel header and sticky comparison controls must stay above the drawing.
+    if(await comparison.isVisible()){const b=await comparison.boundingBox();heading.height=b.y+b.height-heading.y;}
+    if(r.y<heading.y+heading.height)await page.locator('#drawings-body').evaluate((e,amount)=>e.scrollTop-=amount,heading.y+heading.height-r.y);
     const visible=await rect(`#view-${view}`);
     ok(visible.y>=heading.y+heading.height-.5&&visible.y+visible.height<=p.y+p.height+.5,`${size} ${mode}: ${view} drawing clears sticky controls`);
     ok(r.y>=p.y&&r.y+r.height<=p.y+p.height+.5,`${size} ${mode}: ${view} drawing reachable`);
    }
-   await page.locator('#drawings-panel').evaluate(e=>e.scrollTop=0);
+   await page.locator('#drawings-body').evaluate(e=>e.scrollTop=0);
    if(viewport.width===844)await screen(`${mode}-${size}-landscape`);
    if(viewport.width===1440||viewport.width===390||viewport.width===320)await screen(`${mode}-${size}-drawings`);
    // Wheel and pointer gestures inside a panel must never reach the canvas.
@@ -102,7 +103,7 @@ try{
  // Touch switches panels; closing both expands the model area and preserves state.
  await page.setViewportSize({width:390,height:844});await page.locator('[data-workshop=free]').tap();await show('workshop');
  const withPanel=await rect('#scene-focus-area');await page.locator('#drawings-toggle').tap();
- ok(await page.locator('#workshop-panel').isHidden()&&await page.locator('#drawings-panel').isVisible(),'Touch switches to drawings');
+ ok(await page.locator('#workshop-body').isHidden()&&await page.locator('#drawings-body').isVisible(),'Touch switches to drawings');
  await page.locator('#drawings-toggle').tap();await settle();
  ok((await rect('#scene-focus-area')).height>withPanel.height,'Closing panels expands scene');
  // Top-view floor and cube share their screen position: a real canvas click adds,

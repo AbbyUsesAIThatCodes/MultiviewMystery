@@ -39,7 +39,7 @@ try{
  ok(await primary.locator('.term').count()===0,'Nested action label markup is not decorated');
  await hover(primary.locator('span'));ok(await page.locator(cards).count()===0,'Hovering nested action markup opens no definition');await primary.click();
  await page.locator('[data-workshop=learn]').click();await page.locator('[data-mode=build]').click();
- for(const selector of ['[data-workshop=free]','[data-workshop=challenge]','[data-mode=predict]','[data-tool=add]','[data-tool=remove]','[data-tool=rotate]','#place-cube','#remove-cube','#overlay','#target-toggle','[data-view=top]','#reference-open','#help-open']){
+ for(const selector of ['[data-workshop=free]','[data-workshop=challenge]','[data-mode=predict]','[data-tool=add]','[data-tool=remove]','#fullscreen-toggle','#place-cube','#remove-cube','#overlay','#target-toggle','[data-view=top]','#reference-open','#help-open']){
   await hover(page.locator(selector));ok(await page.locator(cards).count()===0,`${selector}: action hover opens no vocabulary card`);
   await page.locator(selector).focus();await page.keyboard.press('Alt+ArrowDown');ok(await page.locator(cards).count()===0,`${selector}: focus and Alt+Down open no vocabulary card`);
  }

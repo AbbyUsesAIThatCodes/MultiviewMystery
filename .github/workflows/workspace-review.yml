@@ -38,6 +38,7 @@ jobs:
         env:
           GAME_DIRECTORY: ${{ steps.build.outputs.path }}
         run: |
+          node tests/controls.mjs
           node tests/tooltips.mjs
           node tests/workspace.mjs
           node tests/browser.mjs
