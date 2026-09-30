@@ -4,17 +4,23 @@ An original browser workshop for Design and Modeling: Free Explore, one guided l
 
 ## Floating Workspace
 
-The 3D scene fills the browser window without requiring fullscreen mode.
-**Workshop** and **Drawing Board** toggle the floating panels. Desktop shows both;
-smaller screens show one panel at a time above the footer (beside the model on
-landscape phones). Choose the active
-panel button again to hide it and give the model more space. The camera follows
-the open space automatically.
+The 3D scene fills the browser window. Choose **Full Screen** in the top bar to
+use the whole display, and **Exit Full Screen** or Escape to return. Browsers
+without fullscreen support keep the regular full-window workspace.
 
-Scroll inside each panel for its remaining content. The Workshop keeps lesson
-feedback and the main action in a separate scrolling area; the Drawing Board
-keeps its heading and comparison controls at the top. Panel gestures do not edit
-or rotate the scene. Use uncovered scene areas to build, rotate, and zoom.
+**Workshop** and **Drawing Board** each have a collapsible header. Choose the
+header to fold the panel down; choose it again to restore its content. Both
+headers remain reachable. Desktop panels open independently; smaller screens
+show one panel at a time. The camera follows the available space automatically.
+
+Scroll inside each panel for its remaining content. Panel headers stay available
+while the contents scroll. The Workshop keeps feedback and the main action in a
+separate scrolling area. Panel gestures do not edit or rotate the scene.
+
+**+ Add Cube** and **− Remove Cube** share one selection: the active tool is green
+and marked with a check. Click or tap to perform that edit. Drag with either tool
+to rotate, without adding or removing a cube on release. Named camera views,
+arrow-key rotation, and zoom remain available.
 
 ## Vocabulary Definitions
 
@@ -96,7 +102,9 @@ Run `node verify.mjs` for spatial and input checks. The browser playthrough is
 `CHROMIUM_EXECUTABLE`, `GAME_DIRECTORY`, and `EVIDENCE_DIRECTORY` overrides.
 Run `node tests/workspace.mjs` for viewport and panel interactions, and
 `node tests/tooltips.mjs` for action-button, nested hover, keyboard, and touch
-regressions. The review workflow runs all three against the identified build.
+regressions. `node tests/controls.mjs` checks editing toggles, real mouse/touch
+drags, panel collapse, and native fullscreen. The review workflow runs all four
+against the identified build.
 
 [Shared Edugames Standards](docs/EDUGAMES-STANDARDS.md) ·
 [Curricular Mapping And Missing Audits](docs/CURRICULAR-MAPPING.md) ·
