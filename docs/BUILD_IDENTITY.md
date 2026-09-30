@@ -32,13 +32,14 @@ target, PR head where applicable, and release status are in the manifest.
 | Builder And Console | `scripts/build.mjs` | Start, success, failure carry complete ID |
 | Output | `builds/<full-id>/` | ID is the folder name |
 | Manifest | Output `build-manifest.json` | Immutable for each invocation |
-| Prominent UI | `#build-identity` in main footer | Injected during build; wraps and is selectable |
+| Prominent UI | `#build-identity` in floating footer | Injected during build; wraps and is selectable |
 | Live Source Preview | `dist/index.html` | Explicitly marked Live Development |
 | Current Local Build | `builds/latest.json` | Generated pointer, not committed |
 | Build Report | Output `BUILD-REPORT.md` | Same ID and source; caller adds verification evidence |
 | CI Summary And Artifact | `.github/workflows/pages.yml` | Same manifest, identified downloadable artifact |
 | Deployment | Same workflow, main only | Publishes already-built folder; never rebuilds during deploy |
 | Current Review Evidence | `docs/REVIEW.md` and PR body | Updated after checks |
+| Floating Workspace Review | `.github/workflows/workspace-review.yml` | Builds and tests stacked PRs; identified artifact and screenshots; never deploys |
 | Contributor Guidance | `AGENTS.md` and PR template | Links to this contract |
 | IDE Entrypoint | None | No separate IDE build entrypoint |
 
