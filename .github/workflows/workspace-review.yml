@@ -22,6 +22,8 @@ jobs:
           node --check dist/app.js
           node --check dist/scene.mjs
           node --check dist/workspace.mjs
+          node --check dist/reference.mjs
+          node --check dist/tooltip-layout.mjs
           node verify.mjs
       - name: Build Review Artifact
         id: build
@@ -36,6 +38,7 @@ jobs:
         env:
           GAME_DIRECTORY: ${{ steps.build.outputs.path }}
         run: |
+          node tests/tooltips.mjs
           node tests/workspace.mjs
           node tests/browser.mjs
       - name: Save Review Build And Evidence
