@@ -63,10 +63,15 @@ try{
    await show('drawings');await geometry(`${size} ${mode} drawings`);
    for(const view of ['top','front','right']){
     await page.locator(`#view-${view}`).scrollIntoViewIfNeeded();
-    const r=await rect(`#view-${view}`),p=await rect('#drawings-panel');
+    const r=await rect(`#view-${view}`),p=await rect('#drawings-panel'),heading=await rect('#drawings-panel>.panel-top');
+    // A sticky heading must not cover the drawing being inspected.
+    if(r.y<heading.y+heading.height)await page.locator('#drawings-panel').evaluate((e,amount)=>e.scrollTop-=amount,heading.y+heading.height-r.y);
+    const visible=await rect(`#view-${view}`);
+    ok(visible.y>=heading.y+heading.height-.5&&visible.y+visible.height<=p.y+p.height+.5,`${size} ${mode}: ${view} drawing clears sticky controls`);
     ok(r.y>=p.y&&r.y+r.height<=p.y+p.height+.5,`${size} ${mode}: ${view} drawing reachable`);
    }
    await page.locator('#drawings-panel').evaluate(e=>e.scrollTop=0);
+   if(viewport.width===844)await screen(`${mode}-${size}-landscape`);
    if(viewport.width===1440||viewport.width===390)await screen(`${mode}-${size}-drawings`);
    // Wheel and pointer gestures inside a panel must never reach the canvas.
    await page.locator('[data-view=iso]').click();
