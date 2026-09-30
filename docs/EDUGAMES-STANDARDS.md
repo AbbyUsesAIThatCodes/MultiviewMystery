@@ -16,8 +16,13 @@ already been updated.
 - Every definition must link to a searchable reference containing curriculum
   vocabulary and useful digital-tool terminology. Mark original local definitions
   honestly; they are not verbatim official curriculum glossary text.
-- Tooltips must work with mouse, keyboard, and touch, stay open for reading, and
-  close predictably. Tooltips must not capture an action button's normal click.
+- Tooltips must work with mouse, keyboard, and touch. Mouse tooltip families stay
+  open while the pointer uses their term or any descendant, then fade away after
+  a short travel grace period. Keyboard and touch retain explicit dismissal.
+  Prefer nearby space outside panels and protect action controls. Use a brief
+  fade, respecting reduced motion.
+- Action buttons never trigger vocabulary tooltips, including nested label markup
+  and dynamically changed labels. Keep definitions in explanatory/reference text.
 
 ## Three Required Purposes
 
