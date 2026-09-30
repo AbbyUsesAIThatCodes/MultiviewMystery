@@ -1,0 +1,17 @@
+{
+  "id": "0.1.0_First-Light_pr-1_build-001_20260929T230016Z_g1487441e1b1d_web",
+  "version": "0.1.0",
+  "codename": "First Light",
+  "slug": "First-Light",
+  "status": "development",
+  "policy": "Normalizes the imported v0.1 milestone to major.minor.patch. No persisted save format or public API is changed. New release numbering awaits milestone acceptance.",
+  "scope": "pr-1",
+  "ordinal": 1,
+  "pr": 1,
+  "prHead": "bc81ef1d4c8ffe7f5e8b84f7b7ba0ce88083507c",
+  "builtAt": "2026-09-29T23:00:16.313Z",
+  "sourceRevision": "1487441e1b1df5f0276fe5463eb0b20186d784e3",
+  "dirty": false,
+  "sourceFingerprint": "9f0d17524be476f554166c9e32891fc81ae6a06d660119008ab9c38175f9952d",
+  "target": "web"
+}

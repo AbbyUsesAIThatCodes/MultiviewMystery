@@ -1,37 +1,48 @@
 name: Deploy Multiview Mystery
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: false
-
 jobs:
   verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Check out the game
+      - name: Check Out The Game
         uses: actions/checkout@v6
-      - name: Verify puzzle logic and controls
+      - name: Set Up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Puzzle Logic And Controls
         run: |
           node --check dist/app.js
+          node --check dist/reference.mjs
           node --check dist/scene.mjs
-          node --check dist/logic.mjs
           node verify.mjs
-      - name: Upload the game
+      - name: Build With A Reserved Identity
+        id: build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/build.mjs
+      - name: Upload Review Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build.outputs.id }}
+          path: ${{ steps.build.outputs.path }}
+      - name: Upload The Game
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: dist
-
+          path: ${{ steps.build.outputs.path }}
   deploy:
     if: github.event_name != 'pull_request'
     needs: verify
@@ -46,6 +57,6 @@ jobs:
     steps:
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      - name: Publish the game
+      - name: Publish The Game
         id: deployment
         uses: actions/deploy-pages@v4
