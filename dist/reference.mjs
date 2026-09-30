@@ -144,8 +144,7 @@ export function initReference(){
  document.getElementById('reference-open').onclick=()=>openReference();
  document.getElementById('reference-close').onclick=()=>{closeFrom(0);document.getElementById('reference').close();};
  document.getElementById('reference-search').addEventListener('input',e=>{closeFrom(0);renderReference(e.target.value);});
- document.addEventListener('pointerover',e=>{
-  if(e.pointerType==='touch')return;
+ const enterMouseTarget=e=>{
   modality='mouse';pointer={x:e.clientX,y:e.clientY};
   const term=termAt(e.target);
   if(suppressedTrigger&&!suppressedTrigger.contains(e.target))suppressedTrigger=null;
@@ -156,19 +155,28 @@ export function initReference(){
     if(term.isConnected&&term.contains(document.elementFromPoint(pointer.x,pointer.y)))openTerm(term,{origin:{...pointer}});
    },HOVER_DELAY);
   }
+ };
+ document.addEventListener('pointerover',e=>{
+  if(e.pointerType!=='touch'&&modality!=='keyboard')enterMouseTarget(e);
  });
  document.addEventListener('pointermove',e=>{
   if(e.pointerType==='touch')return;
+  // Layout and focus changes can emit boundary events beneath a stationary mouse.
+  // They must not dismiss a definition the student just opened with the keyboard.
+  if(modality==='keyboard'){
+   if(pointer&&pointer.x===e.clientX&&pointer.y===e.clientY)return;
+   enterMouseTarget(e);
+  }
   modality='mouse';pointer={x:e.clientX,y:e.clientY};retainFamily(e.target);
  });
  document.addEventListener('pointerout',e=>{
-  if(e.pointerType==='touch')return;
+  if(e.pointerType==='touch'||modality==='keyboard')return;
   const term=termAt(e.target);if(term&&!term.contains(e.relatedTarget))cancelHover();
   if(!e.relatedTarget)pointer=null;
   retainFamily(e.relatedTarget);
  });
  document.addEventListener('pointerdown',e=>{
-  modality=e.pointerType==='touch'?'touch':'mouse';cancelHover();
+  modality=e.pointerType==='touch'?'touch':'mouse';cancelHover();if(modality==='touch')cancelLeave();
   if(familyIndex(e.target)<0&&!termAt(e.target))closeFrom(0);
  },true);
  document.addEventListener('click',e=>{
