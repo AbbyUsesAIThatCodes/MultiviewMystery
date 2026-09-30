@@ -19,7 +19,7 @@ export const terms = [
  {id:'column',title:'Column',aliases:['columns','column'],category:'Modeling',definition:'A vertical stack of cubes at one width and depth position. Every cube above the base needs support directly below it.',example:'Column 1 is the leftmost grid position in the front view.'},
  {id:'footprint',title:'Footprint',aliases:['footprint'],category:'Modeling',definition:'The area a model covers on the base when viewed from above.',example:'Use the top view to plan the footprint before adding height.'},
  {id:'projection',title:'Projection',aliases:['projections','projection'],category:'Drawing',definition:'A way to represent a 3D model on a flat drawing surface from a chosen direction.',example:'Changing the camera does not change the fixed top, front, and right projections.'},
- {id:'rotate',title:'Rotate',aliases:['rotating','rotate','rotation'],category:'Digital Tools',definition:'Turn the viewing direction around the model. Cube positions and the fixed drawing directions stay the same.',example:'Drag, use arrow keys, or choose a named camera view. Rotate View prevents click edits.'},
+ {id:'rotate',title:'Rotate',aliases:['rotating','rotate','rotation'],category:'Digital Tools',definition:'Turn the viewing direction around the model. Cube positions and the fixed drawing directions stay the same.',example:'Drag with either editing tool selected, use arrow keys, or choose a named camera view. Releasing a drag does not edit cubes.'},
  {id:'zoom',title:'Zoom',aliases:['zoom'],category:'Digital Tools',definition:'Make the model look larger or smaller on screen without changing its actual dimensions.',example:'Use + and − beside the model or scroll over it.'},
  {id:'undo',title:'Undo',aliases:['undo'],category:'Digital Tools',definition:'Reverse the most recent cube edit in the current activity.',example:'Reset can also be reversed with Undo.'},
  {id:'target',title:'Target',aliases:['target'],category:'Digital Tools',definition:'The drawings you are trying to match in a build challenge. A successful construction matches all three drawings and follows the build rules.',example:'Show My Target controls whether the green target drawings are visible.'},
@@ -98,7 +98,7 @@ function place(item,index){
  const r=modal?.getBoundingClientRect();
  const bounds={left:Math.max(12,r?r.left+8:12),top:Math.max(12,r?r.top+8:12),right:Math.min(innerWidth-12,r?r.right-8:innerWidth-12),bottom:Math.min(innerHeight-12,r?r.bottom-8:innerHeight-12)};
  const scope=modal||document;
- const panels=modal?[]:[...document.querySelectorAll('.floating-panel,.topbar,footer,.orientation,.zoom,.panel-switcher button')].map(visibleRect).filter(Boolean);
+ const panels=modal?[]:[...document.querySelectorAll('.floating-panel,.topbar,footer,.orientation,.zoom,.panel-toggle')].map(visibleRect).filter(Boolean);
  const controls=[...scope.querySelectorAll(ACTION_SELECTOR)].filter(e=>!e.closest('.term-card')).map(visibleRect).filter(Boolean);
  const cards=stack.slice(0,index).map(s=>visibleRect(s.card)).filter(Boolean);
  card.style.width=`${Math.min(330,bounds.right-bounds.left)}px`;
@@ -133,7 +133,7 @@ function reflow(start=0){
  for(let i=start;i<stack.length;i++){
   const item=stack[i];
   if(!item.trigger.isConnected||!visibleRect(item.trigger)){closeFrom(i);break;}
-  const scroller=item.trigger.closest('.panel-content,.views-panel');
+  const scroller=item.trigger.closest('.panel-content,.drawings-body');
   if(scroller){const a=item.trigger.getBoundingClientRect(),b=scroller.getBoundingClientRect();if(a.bottom<=b.top||a.top>=b.bottom){closeFrom(i);break;}}
   place(item,i);
  }
