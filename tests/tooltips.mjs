@@ -16,7 +16,7 @@ await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE||undefined,args:['--no-sandbox','--disable-dev-shm-usage']});
 const page=await browser.newPage({viewport:{width:1440,height:1000}});
 page.setDefaultTimeout(8000);
-const cards='.term-card:not(.is-closing)',checks=[],errors=[];
+const cards='.term-card:not(.is-closing)',checks=[],errors=[];let activePage=page;
 page.on('pageerror',e=>errors.push(e.message));
 const ok=(value,label)=>{assert(value,label);checks.push(label);};
 const count=n=>page.waitForFunction(({cards,n})=>document.querySelectorAll(cards).length===n,{cards,n});
@@ -83,9 +83,14 @@ try{
  await page.keyboard.press('Escape');await page.locator('#reference-close').click();
  // Touch has no unhover, so cards persist until an outside tap or explicit close.
  for(const viewport of [{width:390,height:844},{width:320,height:568}]){
-  const phone=await browser.newPage({viewport,isMobile:true,hasTouch:true});phone.on('pageerror',e=>errors.push(e.message));
+  const phone=await browser.newPage({viewport,isMobile:true,hasTouch:true});activePage=phone;phone.setDefaultTimeout(8000);phone.on('pageerror',e=>errors.push(e.message));
   await phone.goto(`http://127.0.0.1:${server.address().port}`);
+  await phone.evaluate(()=>document.fonts.ready);
+  // The tiny phone's action area scrolls separately from its instructions.
+  // Protect the visible button, not the bounds of a button clipped by that area.
+  await phone.locator('#primary-action').scrollIntoViewIfNeeded();
   await phone.locator('#mission .term[data-term=model]').first().tap();await phone.waitForTimeout(500);
+  await phone.screenshot({path:path.join(output,`root-phone-${viewport.width}.png`)});
   ok(await phone.locator(cards).count()===1,`${viewport.width}: touch card persists`);
   const card=await phone.locator(cards).boundingBox(),button=await phone.locator('#primary-action').boundingBox();
   ok(card.x>=0&&card.y>=0&&card.x+card.width<=viewport.width&&card.y+card.height<=viewport.height,`${viewport.width}: touch definition fits screen`);
@@ -100,9 +105,9 @@ try{
   await phone.locator('#reference-close').tap();
   await phone.locator('[data-workshop=free]').tap();await phone.locator('#place-cube').tap();await phone.locator('#primary-action').tap();
   ok((await phone.locator('#feedback-title').innerText()).includes('Connected And Supported'),`${viewport.width}: Check Construction activates on first tap`);
-  ok(await phone.locator(cards).count()===0,`${viewport.width}: action tap opens no definition`);await phone.close();
+  ok(await phone.locator(cards).count()===0,`${viewport.width}: action tap opens no definition`);activePage=page;await phone.close();
  }
  ok(errors.length===0,`No page errors: ${errors.join('; ')}`);
  const buildId=await page.locator('#build-identity').innerText();await fs.writeFile(path.join(output,'tooltip-results.json'),JSON.stringify({status:'passed',assertions:checks.length,checks,errors,buildId},null,2)+'\n');console.log(`${checks.length} tooltip assertions passed. Build: ${buildId}`);
-}catch(error){await page.screenshot({path:path.join(output,'failure.png')});await fs.writeFile(path.join(output,'failure.json'),JSON.stringify({message:error.message,checks,errors},null,2));throw error;}
+}catch(error){await activePage.screenshot({path:path.join(output,'failure.png')});await fs.writeFile(path.join(output,'failure.json'),JSON.stringify({message:error.message,checks,errors},null,2));throw error;}
 finally{await browser.close();await new Promise(r=>server.close(r));}

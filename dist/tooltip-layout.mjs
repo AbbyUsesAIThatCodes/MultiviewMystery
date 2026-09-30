@@ -9,7 +9,7 @@ export function placeTooltip({bounds,anchor,pointer,size,panels=[],cards=[],cont
  const width=Math.min(size.width,bounds.right-bounds.left);
  const height=Math.min(size.height,bounds.bottom-bounds.top);
  const widths=[...new Set([width,Math.min(width,280),Math.min(width,240)])];
- const heights=[...new Set([height,Math.min(height,240),Math.min(height,180),Math.min(height,128)])];
+ const heights=[...new Set([height,Math.min(height,240),Math.min(height,180),Math.min(height,128),Math.min(height,96)])];
  const obstacles=[...panels,...cards];let best=null;
  for(const w of widths)for(const h of heights){
   const xs=[bounds.left,bounds.right-w,origin.x+gap,origin.x-w-gap,anchor.right+gap,anchor.left-w-gap];
