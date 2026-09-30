@@ -2,6 +2,20 @@
 
 An original browser workshop for Design and Modeling: Free Explore, one guided lesson, five comprehension challenges, and a nested vocabulary reference.
 
+## Floating Workspace
+
+The 3D scene fills the browser window without requiring fullscreen mode.
+**Workshop** and **Drawing Board** toggle the floating panels. Desktop shows both;
+smaller screens show one panel at a time above the footer (beside the model on
+landscape phones). Choose the active
+panel button again to hide it and give the model more space. The camera follows
+the open space automatically.
+
+Scroll inside each panel for its remaining content. The Workshop keeps lesson
+feedback and the main action in a separate scrolling area; the Drawing Board
+keeps its heading and comparison controls at the top. Panel gestures do not edit
+or rotate the scene. Use uncovered scene areas to build, rotate, and zoom.
+
 ## Play And Publish
 
 The complete game is in this repository and runs independently of ChatGPT. The earlier private ChatGPT Sites preview was hosted separately.

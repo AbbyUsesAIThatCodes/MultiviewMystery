@@ -16,7 +16,7 @@ const call=(name,input={})=>page.evaluate(async({name,input})=>window.workshopTo
 async function add(cell){for(const [i,a] of ['x','y','z'].entries())await page.locator(`#coord-${a}`).selectOption({value:String(cell[i])});await page.locator('#place-cube').click();}
 try{
  await page.goto(`http://127.0.0.1:${server.address().port}`);await page.evaluate(()=>document.fonts.ready);
- ok((await page.locator('#mission').innerText()).includes('You can rotate the 3d model on the left!'),'Requested Explore copy');
+ ok((await page.locator('#mission').innerText()).includes('You can rotate the 3D model in the workspace!'),'Explore copy matches floating layout');
  ok((await page.locator('body').evaluate(e=>getComputedStyle(e).fontFamily)).includes('Comic Sans'),'Comic Sans first in font stack');
  await page.screenshot({path:path.join(output,'learn-desktop.png'),fullPage:true});
  await page.locator('[data-mode=build]').click();ok((await page.locator('#mission').innerText()).includes('green + Add Cube'),'Guided build-specific instruction');
