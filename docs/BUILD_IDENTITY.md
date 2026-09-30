@@ -39,6 +39,7 @@ target, PR head where applicable, and release status are in the manifest.
 | CI Summary And Artifact | `.github/workflows/pages.yml` | Same manifest, identified downloadable artifact |
 | Deployment | Same workflow, main only | Publishes already-built folder; never rebuilds during deploy |
 | Current Review Evidence | `docs/REVIEW.md` and PR body | Updated after checks |
+| Tooltip Review Archive | `docs/review/issue-4/` | Exact tested ZIP, original manifest/report, browser results, and screenshots |
 | Floating Workspace Review | `.github/workflows/workspace-review.yml` | Builds and tests stacked PRs; identified artifact and screenshots; never deploys |
 | Contributor Guidance | `AGENTS.md` and PR template | Links to this contract |
 | IDE Entrypoint | None | No separate IDE build entrypoint |
