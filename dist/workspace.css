@@ -11,7 +11,7 @@
  .panel-switcher button { pointer-events:auto; box-shadow:0 3px 12px #08192333; }
  .panel-switcher button[aria-expanded=true] { background:var(--green); border-color:#78b7a7; color:#fff; }
  .floating-panel { pointer-events:auto; min-width:0; min-height:0; max-height:100%; background:#fff; border:1px solid #c6d5da; border-radius:12px; box-shadow:0 8px 24px #08192340; overscroll-behavior:contain; }
- .workshop-panel { grid-column:1; grid-row:2; display:flex; flex-direction:column; overflow:hidden; }
+ .workshop-panel { grid-column:1; grid-row:2; align-self:start; display:flex; flex-direction:column; overflow:hidden; }
  .panel-content { overflow:auto; min-height:0; overscroll-behavior:contain; scrollbar-gutter:stable; }
  .panel-content:focus-visible { outline:3px solid #d49526; outline-offset:-3px; }
  .brief { display:flex; flex-direction:column; align-items:stretch; gap:12px; margin:0; padding:16px; }
@@ -105,5 +105,6 @@
 }
 @media print {
  .canvas-wrap,.panel-switcher,#scene-focus-area { display:none!important; }
- .floating-panel { max-height:none; overflow:visible; }
+ .floating-panel,.panel-content { max-height:none; overflow:visible; }
+ #workshop-panel[hidden],#drawings-panel[hidden] { display:block!important; }
 }

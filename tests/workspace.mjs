@@ -22,7 +22,7 @@ const rect=selector=>page.locator(selector).boundingBox();
 const pixels=()=>page.locator('#scene').evaluate(c=>c.toDataURL());
 const settle=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
 async function show(name){if(await page.locator(`#${name}-toggle`).getAttribute('aria-expanded')==='false')await page.locator(`#${name}-toggle`).click();await settle();}
-async function screen(name){await page.screenshot({path:path.join(output,name+'.png')});}
+async function screen(name){await page.evaluate(()=>getSelection()?.removeAllRanges());await page.screenshot({path:path.join(output,name+'.png')});}
 async function geometry(label){
  await settle();
  const dims=await page.evaluate(()=>({width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight}));
@@ -81,6 +81,8 @@ try{
    const f=await rect('#scene-focus-area');await page.mouse.move(f.x+f.width/2,f.y+f.height/2);
    await page.mouse.down();await page.mouse.move(f.x+f.width/2+45,f.y+f.height/2+12,{steps:8});await page.mouse.up();
    ok(await page.locator('[data-view][aria-pressed=true]').count()===0,`${size} ${mode}: uncovered scene rotates`);
+   // Reset away from the zoom ceiling before testing another viewport.
+   for(let i=0;i<2;i++)await page.locator('#zoom-out').click();
    await page.mouse.move(f.x+3,f.y+3);const rotated=await pixels();await page.mouse.wheel(0,-100);await settle();
    ok(await pixels()!==rotated,`${size} ${mode}: uncovered scene zooms`);
   }
