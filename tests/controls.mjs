@@ -103,8 +103,8 @@ try{
   if(touch){await session.detach();activePage=page;await p.close();}
  }
  // A rejected request leaves gameplay and the fullscreen state intact.
- const denied=await browser.newPage();activePage=denied;await denied.addInitScript(()=>document.documentElement.requestFullscreen=()=>Promise.reject(new Error('Unavailable')));await denied.goto(url);
- await denied.locator('#fullscreen-toggle').click();ok(await denied.locator('#fullscreen-status').isVisible(),'Denied fullscreen request has readable feedback');ok(await denied.locator('#fullscreen-toggle').getAttribute('aria-pressed')==='false','Denied request never claims fullscreen is active');
+ const denied=await browser.newPage();activePage=denied;denied.on('pageerror',e=>errors.push(e.message));await denied.addInitScript(()=>Element.prototype.requestFullscreen=()=>Promise.reject(new Error('Unavailable')));await denied.goto(url);
+ await denied.locator('#fullscreen-toggle').click();await denied.locator('#fullscreen-status').waitFor({state:'visible'});ok(await denied.locator('#fullscreen-status').isVisible(),'Denied fullscreen request has readable feedback');ok(await denied.locator('#fullscreen-toggle').getAttribute('aria-pressed')==='false','Denied request never claims fullscreen is active');
  await denied.locator('[data-workshop=free]').click();await denied.locator('#place-cube').click();ok(await denied.locator('#cube-count').innerText()==='1 cube','Gameplay remains usable after fullscreen denial');activePage=page;await denied.close();
  const unsupported=await browser.newPage();activePage=unsupported;await unsupported.addInitScript(()=>Object.defineProperty(document,'fullscreenEnabled',{get:()=>false}));await unsupported.goto(url);ok(await unsupported.locator('#fullscreen-toggle').isHidden(),'Unsupported browser does not offer a broken fullscreen control');activePage=page;await unsupported.close();
  ok(errors.length===0,`No page errors: ${errors.join('; ')}`);
