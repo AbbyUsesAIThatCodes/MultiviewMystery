@@ -1,5 +1,7 @@
 # Multiview Mystery
 
+**[Play MultiviewMystery Online](https://abbyusesaithatcodes.github.io/MultiviewMystery/)**
+
 An original browser workshop for Design and Modeling: Free Explore, one guided lesson, five comprehension challenges, and a nested vocabulary reference.
 
 ## Floating Workspace
